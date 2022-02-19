@@ -23,27 +23,30 @@ import { Listing } from "../types/listing";
 
 const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<number>(0);
 
   const [listings, setListings] = useState([]);
   const [collectionName, setCollectionName] = useState<string>("");
 
-  // useEffect(() => {
-  //   getCollectionFromMagiceden("blockstars");
-  // }, []);
-  const searchCollection = (): void => {
+  const searchCollection = (skip: number): void => {
+    setPageNumber(skip);
     setLoading(true);
     getCollectionFromHowrare(collectionName).then((howrare) => {
-      getCollectionFromMagiceden(collectionName).then((magiceden) => {
-        console.log(magiceden);
-        console.log(howrare);
-        setListings(sortByRarity(howrare?.items, magiceden?.results));
-      });
+      getCollectionFromMagiceden(collectionName, skip * 20).then(
+        (magiceden) => {
+          console.log(magiceden);
+          console.log(howrare);
+          setListings(sortByRarity(howrare?.items, magiceden?.results));
+        }
+      );
       setLoading(false);
     });
   };
 
   const listingsContextValue: AppContextInterface = {
     data: listings,
+    pageNumber: pageNumber,
+    changePage: searchCollection,
   };
 
   return (
@@ -59,7 +62,7 @@ const Index = () => {
           placeholder="Enter collection name: eg. blockstars"
           onChange={(e) => setCollectionName(e.target.value)}
         ></Input>
-        <Button onClick={searchCollection}>Search</Button>
+        <Button onClick={() => searchCollection(0)}>Search</Button>
       </InputGroup>
       <Loading loading={loading} />
       <ListingsContext.Provider value={listingsContextValue}>
@@ -72,6 +75,8 @@ const Index = () => {
 
 interface AppContextInterface {
   data: Array<Listing>;
+  pageNumber: number;
+  changePage: (skip: number) => void;
 }
 
 export const ListingsContext = createContext<AppContextInterface | null>(null);

@@ -1,10 +1,13 @@
 import { Box, Heading } from "@chakra-ui/react";
 import * as React from "react";
+import { ListingsContext } from "../../pages";
 import { TableActions } from "./TableActions";
 import { TableContent } from "./TableContent";
 import { TablePagination } from "./TablePagination";
 
 export const TableWithSearch = () => {
+  const listingsContext = React.useContext(ListingsContext);
+
   return (
     <Box as="section" py="12">
       <Box
@@ -14,7 +17,7 @@ export const TableWithSearch = () => {
       >
         <Box overflowX="auto">
           <Heading size="lg" mb="6">
-            Contact
+            Page Number: {listingsContext.pageNumber + 1}
           </Heading>
           <TableActions />
           <TableContent />

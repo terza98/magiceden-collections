@@ -9,11 +9,9 @@ import {
   Tr,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
 import * as React from "react";
 import { ListingsContext } from "../../pages";
 import { User } from "./User";
-import { columns, data } from "./_data";
 
 export const TableContent = () => {
   const listingsContext = React.useContext(ListingsContext);

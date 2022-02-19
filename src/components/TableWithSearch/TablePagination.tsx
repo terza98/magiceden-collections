@@ -9,17 +9,20 @@ import * as React from "react";
 import { ListingsContext } from "../../pages";
 
 export const TablePagination = () => {
-  const listingsContext = React.useContext(ListingsContext);
+  const { data, pageNumber, changePage } = React.useContext(ListingsContext);
+
   return (
     <Flex align="center" justify="space-between">
       <Text color={mode("gray.600", "gray.400")} fontSize="sm">
-        {listingsContext.data.length} listings
+        {data.length} listings
       </Text>
       <ButtonGroup variant="outline" size="sm">
-        <Button as="a" rel="prev">
-          Previous
-        </Button>
-        <Button as="a" rel="next">
+        {pageNumber !== 0 && (
+          <Button as="a" rel="prev" onClick={() => changePage(pageNumber - 1)}>
+            Previous
+          </Button>
+        )}
+        <Button as="a" rel="next" onClick={() => changePage(pageNumber + 1)}>
           Next
         </Button>
       </ButtonGroup>
