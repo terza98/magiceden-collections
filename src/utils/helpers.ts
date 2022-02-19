@@ -23,6 +23,7 @@ export const sortByRarity = (collectionRanked, collectionMagiceden) => {
             rank: rankedItem.rank,
             image: rankedItem.image,
           },
+          id: rankedItem.id,
           price: meItem.price,
           meUrl: `https://magiceden.io/item-details/${meItem.mintAddress}`,
           howrareUrl: rankedItem.link,

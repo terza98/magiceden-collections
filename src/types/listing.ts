@@ -8,4 +8,5 @@ export interface Listing {
   meUrl: string;
   howrareUrl: string;
   collection: string;
+  id: string;
 }

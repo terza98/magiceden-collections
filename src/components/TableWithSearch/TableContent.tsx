@@ -53,7 +53,7 @@ export const TableContent = () => {
       </Thead>
       <Tbody>
         {listingsContext.data.map((row, index) => (
-          <Tr key={index}>
+          <Tr key={row.id}>
             {columns.map((column, index) => {
               const cell = row[column.accessor as keyof typeof row];
               const element = column.Cell?.(cell) ?? cell;
