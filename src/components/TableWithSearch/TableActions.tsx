@@ -20,6 +20,7 @@ export const TableActions = () => {
       spacing="4"
       direction={{ base: "column", md: "row" }}
       justify="space-between"
+      mb={8}
     >
       <HStack>
         <FormControl minW={{ md: "320px" }} id="search">

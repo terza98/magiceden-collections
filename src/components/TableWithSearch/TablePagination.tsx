@@ -19,11 +19,11 @@ export const TablePagination = () => {
       <ButtonGroup variant="outline" size="sm">
         {pageNumber !== 0 && (
           <Button as="a" rel="prev" onClick={() => changePage(pageNumber - 1)}>
-            Previous
+            Previous page
           </Button>
         )}
         <Button as="a" rel="next" onClick={() => changePage(pageNumber + 1)}>
-          Next
+          Next page
         </Button>
       </ButtonGroup>
     </Flex>

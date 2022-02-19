@@ -51,10 +51,10 @@ const Index = () => {
 
   return (
     <Box p={10}>
-      <Heading size="lg" mb={10}>
-        Collections rarity - returns last 20 listed by rarity descending
+      <Heading size="lg" mb={10} textAlign="center">
+        Check your MagicEden collection rarity
       </Heading>
-      <InputGroup>
+      <InputGroup justifyContent="center">
         <Input
           border="1px solid"
           maxW="300px"

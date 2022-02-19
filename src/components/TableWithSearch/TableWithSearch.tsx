@@ -20,8 +20,8 @@ export const TableWithSearch = () => {
             Page Number: {listingsContext.pageNumber + 1}
           </Heading>
           <TableActions />
-          <TableContent />
           <TablePagination />
+          <TableContent />
         </Box>
       </Box>
     </Box>
