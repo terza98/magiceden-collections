@@ -19,6 +19,7 @@ import {
 import Loading from "../components/Loading";
 import { sortByRarity } from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
+import { Listing } from "../types/listing";
 
 const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -79,7 +80,7 @@ const Index = () => {
 };
 
 interface AppContextInterface {
-  data: Array<object>;
+  data: Array<Listing>;
 }
 
 export const ListingsContext = createContext<AppContextInterface | null>(null);
