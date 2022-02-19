@@ -36,7 +36,7 @@ const Index = () => {
       getCollectionFromMagiceden(collectionName).then((magiceden) => {
         console.log(magiceden);
         console.log(howrare);
-        setListings(sortByRarity(howrare.items, magiceden.results));
+        setListings(sortByRarity(howrare?.items, magiceden?.results));
       });
       setLoading(false);
     });
@@ -65,15 +65,6 @@ const Index = () => {
       <ListingsContext.Provider value={listingsContextValue}>
         <TableWithSearch />
       </ListingsContext.Provider>
-      <Flex flexDir="column" mt={10}>
-        {listings.map((item) => (
-          <Flex key={item.id}>
-            <Text>{item.id}</Text>
-            <Image src={item.image} width="150px" height="150px" />
-            <Text>{item.price}</Text>
-          </Flex>
-        ))}
-      </Flex>
       <DarkModeSwitch />
     </Box>
   );

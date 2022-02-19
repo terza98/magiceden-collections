@@ -1,11 +1,14 @@
 import axios from "axios";
 
 //magiceden collection
-export const getCollectionFromMagiceden = async (collection: string) => {
+export const getCollectionFromMagiceden = async (
+  collection: string,
+  skip: number = 0
+) => {
   try {
     //"takerAmount": 1,
     const response = await axios.get(
-      `https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { "createdAt": -1}, "$limit": 20}`
+      `https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { "createdAt": -1}, "$skip": ${skip}, "$limit": 20}`
     );
     if (response) return response.data;
   } catch (error) {
