@@ -5,7 +5,7 @@ export const getCollectionFromMagiceden = async (collection: string) => {
   try {
     //"takerAmount": 1,
     const response = await axios.get(
-      `https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { "createdAt": -1}, "$limit": 20}`
+      `https://cors-anywhere.herokuapp.com/https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { "createdAt": -1}, "$limit": 20}`
     );
     if (response) return response.data;
   } catch (error) {
