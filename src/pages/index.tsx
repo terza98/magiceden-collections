@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   getCollectionFromHowrare,
   getCollectionFromMagiceden,
@@ -35,11 +35,16 @@ const Index = () => {
       getCollectionFromMagiceden(collectionName).then((magiceden) => {
         console.log(magiceden);
         console.log(howrare);
-        setListings(sortByRarity(howrare, magiceden));
+        setListings(sortByRarity(howrare.items, magiceden.results));
       });
       setLoading(false);
     });
   };
+
+  const listingsContextValue: AppContextInterface = {
+    data: listings,
+  };
+
   return (
     <Box p={10}>
       <Heading size="lg" mb={10}>
@@ -56,6 +61,9 @@ const Index = () => {
         <Button onClick={searchCollection}>Search</Button>
       </InputGroup>
       <Loading loading={loading} />
+      <ListingsContext.Provider value={listingsContextValue}>
+        <TableWithSearch />
+      </ListingsContext.Provider>
       <Flex flexDir="column" mt={10}>
         {listings.map((item) => (
           <Flex key={item.id}>
@@ -65,9 +73,15 @@ const Index = () => {
           </Flex>
         ))}
       </Flex>
-      <TableWithSearch />
       <DarkModeSwitch />
     </Box>
   );
 };
+
+interface AppContextInterface {
+  data: Array<object>;
+}
+
+export const ListingsContext = createContext<AppContextInterface | null>(null);
+
 export default Index;
