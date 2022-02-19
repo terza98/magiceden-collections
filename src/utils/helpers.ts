@@ -24,9 +24,10 @@ export const sortByRarity = (collectionRanked, collectionMagiceden) => {
             image: rankedItem.image,
           },
           price: meItem.price,
-          meUrl: `https://magiceden.io/item-details/${meItem.id}`,
-          howrareUrl: rankedItem.url,
+          meUrl: `https://magiceden.io/item-details/${meItem.mintAddress}`,
+          howrareUrl: rankedItem.link,
           collection: meItem.collectionTitle,
+          collectionUrl: `https://magiceden.io/marketplace/${meItem.collectionName}`,
         });
     });
   });
