@@ -31,13 +31,28 @@ export const getCollectionFromHowrare = async (collection: string) => {
   }
 };
 
+// all from magiceden
 export const allCollectionsFromMagiceden = async () => {
   try {
     const response = await axios.get(
-      `https://api-mainnet.magiceden.io/all_collections?edge_cache=true`
+      `https://api-mainnet.magiceden.io/all_collections`
     );
     console.log(response.data.collections);
     if (response) return response.data.collections;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+//moonrank
+
+export const getCollectionFromMoonrank = async (collection: string) => {
+  try {
+    const response = await axios.get(
+      `https://proxy-server-magiceden.herokuapp.com/https://moonrank.app/mints/xin_dragons_gen2`
+    );
+    console.log(response.data);
+    if (response) return response.data;
   } catch (error) {
     console.log("error", error);
   }
