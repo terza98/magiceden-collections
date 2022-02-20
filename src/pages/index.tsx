@@ -37,15 +37,16 @@ const Index = () => {
           console.log(magiceden);
           console.log(howrare);
           setListings(sortByRarity(howrare?.items, magiceden?.results));
+          setLoading(false);
         }
       );
-      setLoading(false);
     });
   };
 
   const listingsContextValue: AppContextInterface = {
     data: listings,
     pageNumber: pageNumber,
+    loading: loading,
     changePage: searchCollection,
   };
 
@@ -64,7 +65,6 @@ const Index = () => {
         ></Input>
         <Button onClick={() => searchCollection(0)}>Search</Button>
       </InputGroup>
-      <Loading loading={loading} />
       <ListingsContext.Provider value={listingsContextValue}>
         <TableWithSearch />
       </ListingsContext.Provider>
@@ -76,6 +76,7 @@ const Index = () => {
 interface AppContextInterface {
   data: Array<Listing>;
   pageNumber: number;
+  loading: boolean;
   changePage: (skip: number) => void;
 }
 

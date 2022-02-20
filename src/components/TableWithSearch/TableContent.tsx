@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { ListingsContext } from "../../pages";
+import Loading from "../Loading";
 import { User } from "./User";
 
 export const TableContent = () => {
@@ -50,6 +51,15 @@ export const TableContent = () => {
         </Tr>
       </Thead>
       <Tbody>
+        {listingsContext.loading && (
+          <Tr>
+            <Td></Td>
+            <Td></Td>
+            <Td>
+              <Loading loading={listingsContext.loading} />
+            </Td>
+          </Tr>
+        )}
         {listingsContext.data.map((row, index) => (
           <Tr key={row.id}>
             {columns.map((column, index) => {

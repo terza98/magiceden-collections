@@ -6,7 +6,7 @@ interface LoadingProps {
 const Loading = ({ loading }: LoadingProps) => {
   return (
     loading && (
-      <Flex justify="center">
+      <Flex justify="left">
         <Image src="loading.gif" maxW="150px" maxH="150px" w="100%" />
       </Flex>
     )
