@@ -5,6 +5,7 @@ import {
   Input,
   Button,
   Heading,
+  Text,
 } from "@chakra-ui/react";
 
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
@@ -16,6 +17,7 @@ import {
 import { sortByRarity } from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
 import { Listing } from "../types/listing";
+import { Footer } from "../components/Footer";
 
 const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,12 +72,15 @@ const Index = () => {
           onChange={(e) => setCollectionName(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && searchCollection(0)}
         ></Input>
-        <Button onClick={() => searchCollection(0)}>Search</Button>
+        <Button ml={4} onClick={() => searchCollection(0)}>
+          Search
+        </Button>
       </InputGroup>
       <ListingsContext.Provider value={listingsContextValue}>
         <TableWithSearch />
       </ListingsContext.Provider>
       <DarkModeSwitch />
+      <Footer />
     </Box>
   );
 };

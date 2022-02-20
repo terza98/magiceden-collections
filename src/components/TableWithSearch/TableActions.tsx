@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Flex,
   FormControl,
   FormLabel,
   HStack,
@@ -9,6 +10,7 @@ import {
   InputLeftElement,
   Select,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { BsSearch } from "react-icons/bs";
@@ -25,39 +27,34 @@ export const TableActions = () => {
       <HStack>
         <FormControl minW={{ md: "320px" }} id="search">
           <InputGroup size="sm">
-            <FormLabel srOnly>Filter by name or email</FormLabel>
+            <FormLabel srOnly>Filter by ID or RANK</FormLabel>
             <InputLeftElement pointerEvents="none" color="gray.400">
               <BsSearch />
             </InputLeftElement>
             <Input
               rounded="base"
               type="search"
-              placeholder="Filter by name or email..."
+              placeholder="Filter by ID or RANK..."
             />
           </InputGroup>
         </FormControl>
+
+        <Button> Filter</Button>
+      </HStack>
+
+      <Flex alignItems="center">
+        <Text mr={4}>Sort by</Text>
         <Select
           w={{ base: "300px", md: "unset" }}
           rounded="base"
           size="sm"
-          placeholder="All roles"
+          placeholder="Rarity descending"
         >
-          <option>All roles</option>
-          <option>UI Designers</option>
-          <option>Marketing Directors</option>
+          <option>Rarity ascending</option>
+          <option>Price (low to high)</option>
+          <option>Price (high to low)</option>
         </Select>
-      </HStack>
-      <ButtonGroup size="sm" variant="outline">
-        <Button iconSpacing="1" leftIcon={<RiAddFill fontSize="1.25em" />}>
-          New member
-        </Button>
-        <Button
-          iconSpacing="1"
-          leftIcon={<RiArrowRightUpLine fontSize="1.25em" />}
-        >
-          Export CSV
-        </Button>
-      </ButtonGroup>
+      </Flex>
     </Stack>
   );
 };
