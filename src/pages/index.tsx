@@ -1,22 +1,11 @@
-import {
-  Link,
-  Text,
-  Box,
-  InputGroup,
-  Input,
-  Button,
-  Flex,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { Box, InputGroup, Input, Button, Heading } from "@chakra-ui/react";
 
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import {
   getCollectionFromHowrare,
   getCollectionFromMagiceden,
 } from "../api/queries";
-import Loading from "../components/Loading";
 import { sortByRarity } from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
 import { Listing } from "../types/listing";
@@ -25,22 +14,32 @@ const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pageNumber, setPageNumber] = useState<number>(0);
 
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useState<Array<Listing>>([]);
+  const [howrare, setHowrare] = useState<Array<object>>([]);
   const [collectionName, setCollectionName] = useState<string>("");
 
   const searchCollection = (skip: number): void => {
     setPageNumber(skip);
     setLoading(true);
-    getCollectionFromHowrare(collectionName).then((howrare) => {
+    if (howrare.length)
       getCollectionFromMagiceden(collectionName, skip * 20).then(
         (magiceden) => {
-          console.log(magiceden);
-          console.log(howrare);
-          setListings(sortByRarity(howrare?.items, magiceden?.results));
+          setListings(sortByRarity(howrare, magiceden?.results));
           setLoading(false);
         }
       );
-    });
+    else
+      getCollectionFromHowrare(collectionName).then((howrareListings) => {
+        getCollectionFromMagiceden(collectionName, skip * 20).then(
+          (magiceden) => {
+            setHowrare(howrareListings?.items);
+            setListings(
+              sortByRarity(howrareListings?.items, magiceden?.results)
+            );
+            setLoading(false);
+          }
+        );
+      });
   };
 
   const listingsContextValue: AppContextInterface = {
