@@ -15,27 +15,27 @@ const Index = () => {
   const [pageNumber, setPageNumber] = useState<number>(0);
 
   const [listings, setListings] = useState<Array<Listing>>([]);
-  const [howrare, setHowrare] = useState<Array<object>>([]);
+  const [howrareListings, setHowrareListings] = useState<Array<object>>([]);
+  const [howrareCollection, setHowrareCollection] = useState<string>("");
   const [collectionName, setCollectionName] = useState<string>("");
 
   const searchCollection = (skip: number): void => {
     setPageNumber(skip);
     setLoading(true);
-    if (howrare.length)
+    if (howrareListings.length && howrareCollection === collectionName)
       getCollectionFromMagiceden(collectionName, skip * 20).then(
         (magiceden) => {
-          setListings(sortByRarity(howrare, magiceden?.results));
+          setListings(sortByRarity(howrareListings, magiceden?.results));
           setLoading(false);
         }
       );
     else
-      getCollectionFromHowrare(collectionName).then((howrareListings) => {
+      getCollectionFromHowrare(collectionName).then((howrare) => {
         getCollectionFromMagiceden(collectionName, skip * 20).then(
           (magiceden) => {
-            setHowrare(howrareListings?.items);
-            setListings(
-              sortByRarity(howrareListings?.items, magiceden?.results)
-            );
+            setHowrareCollection(howrare?.collection.toLowerCase());
+            setHowrareListings(howrare?.items);
+            setListings(sortByRarity(howrare?.items, magiceden?.results));
             setLoading(false);
           }
         );
@@ -61,6 +61,7 @@ const Index = () => {
           value={collectionName}
           placeholder="Enter collection name: eg. blockstars"
           onChange={(e) => setCollectionName(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && searchCollection(0)}
         ></Input>
         <Button onClick={() => searchCollection(0)}>Search</Button>
       </InputGroup>
