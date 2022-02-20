@@ -17,7 +17,7 @@ import { BsSearch } from "react-icons/bs";
 import { ListingsContext } from "../../pages";
 
 export const TableActions = () => {
-  const { collectionName } = useContext(ListingsContext);
+  const { collectionName, sort } = useContext(ListingsContext);
 
   const [query, setQuery] = useState<string>("");
 
@@ -60,11 +60,11 @@ export const TableActions = () => {
           w={{ base: "300px", md: "unset" }}
           rounded="base"
           size="sm"
+          defaultValue="rarity"
           placeholder="Rarity descending"
+          onChange={(e) => sort(e.target.value)}
         >
-          <option>Rarity ascending</option>
-          <option>Price (low to high)</option>
-          <option>Price (high to low)</option>
+          <option value="price">Price (low to high)</option>
         </Select>
       </Flex>
     </Stack>

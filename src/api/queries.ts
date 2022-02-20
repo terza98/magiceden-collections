@@ -3,12 +3,15 @@ import axios from "axios";
 //magiceden collection
 export const getCollectionFromMagiceden = async (
   collection: string,
-  skip = 0
+  skip = 0,
+  sortPreference: string
 ) => {
   try {
-    //"takerAmount": 1,
+    const priceAsc = sortPreference === "price";
     const response = await axios.get(
-      `https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { "createdAt": -1}, "$skip": ${skip}, "$limit": 20}`
+      `https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery?q=%7B%22$match": {"collectionSymbol": "${collection.toLowerCase()}"}, "$sort": { ${
+        priceAsc ? `"takerAmount": 1,` : ``
+      } "createdAt": -1}, "$skip": ${skip}, "$limit": 20}`
     );
     if (response) return response.data;
   } catch (error) {

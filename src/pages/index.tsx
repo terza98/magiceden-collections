@@ -1,6 +1,5 @@
 import {
   Box,
-  Flex,
   InputGroup,
   Input,
   Button,
@@ -27,28 +26,44 @@ const Index = () => {
   const [howrareListings, setHowrareListings] = useState<Array<object>>([]);
   const [howrareCollection, setHowrareCollection] = useState<string>("");
   const [collectionName, setCollectionName] = useState<string>("");
+  const [sortPreference, setSortPreference] = useState<string>("rarity");
 
   const searchCollection = (skip: number): void => {
     setPageNumber(skip);
     setLoading(true);
     if (howrareListings.length && howrareCollection === collectionName)
-      getCollectionFromMagiceden(collectionName, skip * 20).then(
-        (magiceden) => {
-          setListings(sortByRarity(howrareListings, magiceden?.results));
-          setLoading(false);
-        }
-      );
+      getCollectionFromMagiceden(
+        collectionName,
+        skip * 20,
+        sortPreference
+      ).then((magiceden) => {
+        setListings(sortByRarity(howrareListings, magiceden?.results));
+        setLoading(false);
+      });
     else
       getCollectionFromHowrare(collectionName).then((howrare) => {
-        getCollectionFromMagiceden(collectionName, skip * 20).then(
-          (magiceden) => {
-            setHowrareCollection(howrare?.collection.toLowerCase());
-            setHowrareListings(howrare?.items);
-            setListings(sortByRarity(howrare?.items, magiceden?.results));
-            setLoading(false);
-          }
-        );
+        getCollectionFromMagiceden(
+          collectionName,
+          skip * 20,
+          sortPreference
+        ).then((magiceden) => {
+          setHowrareCollection(howrare?.collection);
+          setHowrareListings(howrare?.items);
+          setListings(sortByRarity(howrare?.items, magiceden?.results));
+          setLoading(false);
+        });
       });
+  };
+
+  const sort = (value: string): void => {
+    setSortPreference(value);
+    setLoading(true);
+    getCollectionFromMagiceden(collectionName, pageNumber * 20, value).then(
+      (magiceden) => {
+        setListings(sortByRarity(howrareListings, magiceden?.results));
+        setLoading(false);
+      }
+    );
   };
 
   const listingsContextValue: AppContextInterface = {
@@ -57,6 +72,7 @@ const Index = () => {
     pageNumber: pageNumber,
     loading: loading,
     changePage: searchCollection,
+    sort: sort,
   };
 
   return (
@@ -95,6 +111,7 @@ interface AppContextInterface {
   pageNumber: number;
   loading: boolean;
   changePage: (skip: number) => void;
+  sort: (value: string) => void;
 }
 
 export const ListingsContext = createContext<AppContextInterface | null>(null);
