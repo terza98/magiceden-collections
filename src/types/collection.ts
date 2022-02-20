@@ -5,4 +5,5 @@ export interface CollectionInfo {
   logo: string;
   description: string;
   howrare: string;
+  name: string;
 }

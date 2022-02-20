@@ -24,29 +24,29 @@ export const TableWithSearch = () => {
         <Box overflowX="auto">
           <Heading size="lg" mb="2">
             <Link href={`https://magiceden.io/marketplace/${collectionName}`}>
-              {collectionName.charAt(0).toUpperCase() + collectionName.slice(1)}
+              {collectionInfo?.name}
             </Link>
           </Heading>
-          <Text>{collectionInfo.description}</Text>
+          <Text>{collectionInfo?.description}</Text>
           {collectionInfo && (
             <Flex my={4}>
               <IconButton
                 {...iconButtonProps}
                 aria-label="twitter"
                 icon={<BsTwitter />}
-                href={collectionInfo.twitter}
+                href={collectionInfo?.twitter}
               />
               <IconButton
                 {...iconButtonProps}
                 aria-label="discord"
                 icon={<BsDiscord />}
-                href={collectionInfo.discord}
+                href={collectionInfo?.discord}
               />
               <IconButton
                 {...iconButtonProps}
                 aria-label="website"
                 icon={<BsLink />}
-                href={collectionInfo.website}
+                href={collectionInfo?.website}
               />
             </Flex>
           )}

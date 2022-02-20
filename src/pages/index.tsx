@@ -33,7 +33,7 @@ const Index = () => {
   const searchCollection = (skip: number): void => {
     setPageNumber(skip);
     setLoading(true);
-    if (howrareListings.length && howrareCollection === collectionName)
+    if (howrareListings?.length && howrareCollection === collectionName)
       getCollectionFromMagiceden(
         collectionName,
         skip * 20,
@@ -51,14 +51,16 @@ const Index = () => {
         ).then((magiceden) => {
           setHowrareCollection(howrare?.collection);
           setHowrareListings(howrare?.items);
-          setCollectionInfo({
-            twitter: howrare.twitter,
-            website: howrare.website,
-            logo: howrare.logo,
-            howrare: howrare.ranking_url,
-            discord: howrare.discord,
-            description: howrare.description,
-          });
+          if (howrare)
+            setCollectionInfo({
+              twitter: howrare.twitter ?? "",
+              website: howrare.website ?? "",
+              logo: howrare.logo ?? "",
+              howrare: howrare.ranking_url ?? "",
+              discord: howrare.discord ?? "",
+              description: howrare.description ?? "",
+              name: howrare.collection ?? "",
+            });
           console.log(howrare);
           setListings(sortByRarity(howrare?.items, magiceden?.results));
           setLoading(false);
