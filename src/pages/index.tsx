@@ -1,23 +1,18 @@
-import {
-  Box,
-  InputGroup,
-  Input,
-  Button,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, InputGroup, Input, Heading, Text } from "@chakra-ui/react";
 
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
+  allCollectionsFromMagiceden,
   getCollectionFromHowrare,
   getCollectionFromMagiceden,
 } from "../api/queries";
-import { sortByRarity } from "../utils/helpers";
+import { filterCollections, sortByRarity } from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
 import { Listing } from "../types/listing";
 import { Footer } from "../components/Footer";
-import { CollectionInfo } from "../types/collection";
+import { CollectionInfo, FilteredCollection } from "../types/collection";
+import { Autocomplete } from "../components/Autocomplete";
 
 const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,16 +21,31 @@ const Index = () => {
   const [listings, setListings] = useState<Array<Listing>>([]);
   const [howrareListings, setHowrareListings] = useState<Array<object>>([]);
   const [howrareCollection, setHowrareCollection] = useState<string>("");
-  const [collectionName, setCollectionName] = useState<string>("");
+  const [collectionSymbol, setCollectionSymbol] = useState<string>("");
   const [sortPreference, setSortPreference] = useState<string>("rarity");
   const [collectionInfo, setCollectionInfo] = useState<CollectionInfo>();
 
-  const searchCollection = (skip: number): void => {
+  const [allCollections, setAllCollections] = useState<Array<object>>([]);
+  const [filteredCollections, setFilteredCollections] = useState<
+    Array<FilteredCollection>
+  >([]);
+
+  useEffect(() => {
+    allCollectionsFromMagiceden().then((response) => {
+      setAllCollections(response);
+    });
+  }, []);
+
+  const searchCollection = (skip: number, collectionSymbol: string): void => {
+    const howrareHandle = collectionSymbol.replaceAll("_", "");
+
     setPageNumber(skip);
     setLoading(true);
-    if (howrareListings?.length && howrareCollection === collectionName)
+
+    setFilteredCollections([]);
+    if (howrareListings?.length && howrareCollection === collectionSymbol)
       getCollectionFromMagiceden(
-        collectionName,
+        collectionSymbol,
         skip * 20,
         sortPreference
       ).then((magiceden) => {
@@ -43,9 +53,9 @@ const Index = () => {
         setLoading(false);
       });
     else
-      getCollectionFromHowrare(collectionName).then((howrare) => {
+      getCollectionFromHowrare(howrareHandle).then((howrare) => {
         getCollectionFromMagiceden(
-          collectionName,
+          collectionSymbol,
           skip * 20,
           sortPreference
         ).then((magiceden) => {
@@ -71,7 +81,7 @@ const Index = () => {
   const sort = (value: string): void => {
     setSortPreference(value);
     setLoading(true);
-    getCollectionFromMagiceden(collectionName, pageNumber * 20, value).then(
+    getCollectionFromMagiceden(collectionSymbol, pageNumber * 20, value).then(
       (magiceden) => {
         setListings(sortByRarity(howrareListings, magiceden?.results));
         setLoading(false);
@@ -81,12 +91,19 @@ const Index = () => {
 
   const listingsContextValue: AppContextInterface = {
     data: listings,
-    collectionName: collectionName,
+    collectionSymbol: collectionSymbol,
     collectionInfo: collectionInfo,
     pageNumber: pageNumber,
     loading: loading,
     changePage: searchCollection,
     sort: sort,
+  };
+
+  const handleSearch = (query) => {
+    setCollectionSymbol(query);
+    query === ""
+      ? setFilteredCollections([])
+      : setFilteredCollections(filterCollections(query, allCollections));
   };
 
   return (
@@ -101,15 +118,21 @@ const Index = () => {
         <Input
           border="1px solid"
           maxW="300px"
-          value={collectionName}
+          value={collectionSymbol}
           placeholder="Enter collection name: eg. blockstars"
-          onChange={(e) => setCollectionName(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && searchCollection(0)}
+          onChange={(e) => handleSearch(e.target.value)}
+          onKeyPress={(e) =>
+            e.key === "Enter" && searchCollection(0, collectionSymbol)
+          }
         ></Input>
-        <Button ml={4} onClick={() => searchCollection(0)}>
+        {/* <Button ml={4} onClick={() => searchCollection(0)}>
           Search
-        </Button>
+        </Button> */}
       </InputGroup>
+      <Autocomplete
+        filteredCollections={filteredCollections}
+        searchCollection={searchCollection}
+      />
       <ListingsContext.Provider value={listingsContextValue}>
         <TableWithSearch />
       </ListingsContext.Provider>
@@ -121,11 +144,11 @@ const Index = () => {
 
 interface AppContextInterface {
   data: Array<Listing>;
-  collectionName: string;
+  collectionSymbol: string;
   collectionInfo: CollectionInfo;
   pageNumber: number;
   loading: boolean;
-  changePage: (skip: number) => void;
+  changePage: (skip: number, collectionSymbol: string) => void;
   sort: (value: string) => void;
 }
 

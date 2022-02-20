@@ -7,3 +7,10 @@ export interface CollectionInfo {
   howrare: string;
   name: string;
 }
+
+export interface FilteredCollection {
+  image: string;
+  symbol: string;
+  name: string;
+  totalItems: number;
+}

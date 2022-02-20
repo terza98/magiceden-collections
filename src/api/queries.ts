@@ -30,3 +30,15 @@ export const getCollectionFromHowrare = async (collection: string) => {
     console.log("error", error);
   }
 };
+
+export const allCollectionsFromMagiceden = async () => {
+  try {
+    const response = await axios.get(
+      `https://api-mainnet.magiceden.io/all_collections?edge_cache=true`
+    );
+    console.log(response.data.collections);
+    if (response) return response.data.collections;
+  } catch (error) {
+    console.log("error", error);
+  }
+};

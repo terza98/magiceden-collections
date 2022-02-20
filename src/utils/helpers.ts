@@ -43,3 +43,9 @@ export const sortByRarity = (collectionRanked, collectionMagiceden) => {
   });
   return comparableListings.sort(compare);
 };
+
+export const filterCollections = (query, collections) => {
+  return collections.filter(
+    (collection) => collection.symbol.indexOf(query.toLowerCase()) > -1
+  );
+};
