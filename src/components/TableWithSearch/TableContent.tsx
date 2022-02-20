@@ -12,6 +12,7 @@ import {
 import * as React from "react";
 import { ListingsContext } from "../../pages";
 import Loading from "../Loading";
+import { RarestAttribute } from "./RarestAttribute";
 import { User } from "./User";
 
 export const TableContent = () => {
@@ -25,12 +26,15 @@ export const TableContent = () => {
       },
     },
     {
-      Header: "Collection",
-      accessor: "collection",
+      Header: "Rarest attributes",
+      accessor: "rarestAttribute",
+      Cell: function MemberCell(data: any) {
+        return <RarestAttribute data={data} />;
+      },
     },
     {
-      Header: "Floor Price",
-      accessor: "floor_price",
+      Header: "Attribute Count",
+      accessor: "attributesCount",
     },
     {
       Header: "Price",
@@ -60,7 +64,7 @@ export const TableContent = () => {
             </Td>
           </Tr>
         ) : (
-          listingsContext.data.map((row, index) => (
+          listingsContext.data.map((row) => (
             <Tr key={row.id}>
               {columns.map((column, index) => {
                 const cell = row[column.accessor as keyof typeof row];

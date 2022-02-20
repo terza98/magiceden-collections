@@ -3,7 +3,7 @@ import axios from "axios";
 //magiceden collection
 export const getCollectionFromMagiceden = async (
   collection: string,
-  skip: number = 0
+  skip = 0
 ) => {
   try {
     //"takerAmount": 1,

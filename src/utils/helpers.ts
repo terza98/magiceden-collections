@@ -16,15 +16,24 @@ export const sortByRarity = (collectionRanked, collectionMagiceden) => {
   collectionMagiceden?.forEach((meItem) => {
     const id = getId(meItem);
     collectionRanked?.forEach((rankedItem) => {
+      const attributes = rankedItem.attributes.filter(
+        (attribute) => attribute.value !== "None"
+      );
+      const rarestAttribute = attributes.reduce((prev, curr) =>
+        parseFloat(prev.rarity) < parseFloat(curr.rarity) ? prev : curr
+      );
+
       if (rankedItem.id == id)
         comparableListings.push({
+          attributesCount: attributes.length,
           nft: {
             name: rankedItem.name,
             rank: rankedItem.rank,
             image: rankedItem.image,
           },
+          rarestAttribute: rarestAttribute,
           id: rankedItem.id,
-          price: meItem.price,
+          price: `${meItem.price} SOL`,
           meUrl: `https://magiceden.io/item-details/${meItem.mintAddress}`,
           howrareUrl: rankedItem.link,
           collection: meItem.collectionTitle,
@@ -32,7 +41,5 @@ export const sortByRarity = (collectionRanked, collectionMagiceden) => {
         });
     });
   });
-
-  console.log(comparableListings.sort(compare));
   return comparableListings.sort(compare);
 };
