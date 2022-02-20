@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider resetCSS theme={theme}>
       <Head>
         <title>
-          ME SNIPER - Check your collection rarity and snipe some rares!
+          SnipeMe - Check your collection rarity and snipe some rares!
         </title>
       </Head>
       <Component {...pageProps} />

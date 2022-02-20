@@ -61,9 +61,12 @@ const Index = () => {
 
   return (
     <Box p={10}>
-      <Heading size="lg" mb={10} textAlign="center">
-        Check your MagicEden collection rarity
+      <Heading size="lg" textAlign="center" mb={4}>
+        SnipeMe
       </Heading>
+      <Text textAlign="center" mb={10}>
+        Search for your collection rarity and snipe the most recent NFTs listed
+      </Text>
       <InputGroup justifyContent="center">
         <Input
           border="1px solid"
