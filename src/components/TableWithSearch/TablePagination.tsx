@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -16,16 +17,25 @@ export const TablePagination = () => {
       <Text color={mode("gray.600", "gray.400")} fontSize="sm">
         Shows 20 listings per page
       </Text>
-      <ButtonGroup variant="outline" size="sm">
-        {pageNumber !== 0 && (
-          <Button as="a" rel="prev" onClick={() => changePage(pageNumber - 1)}>
-            Previous page
+      <Box>
+        <ButtonGroup variant="outline" size="sm">
+          {pageNumber !== 0 && (
+            <Button
+              as="a"
+              rel="prev"
+              onClick={() => changePage(pageNumber - 1)}
+            >
+              Previous page
+            </Button>
+          )}
+          <Button as="a" rel="next" onClick={() => changePage(pageNumber + 1)}>
+            Next page
           </Button>
-        )}
-        <Button as="a" rel="next" onClick={() => changePage(pageNumber + 1)}>
-          Next page
-        </Button>
-      </ButtonGroup>
+        </ButtonGroup>
+        <Text mt={2} textAlign="right">
+          Page number: {pageNumber + 1}
+        </Text>
+      </Box>
     </Flex>
   );
 };

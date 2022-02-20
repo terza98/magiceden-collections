@@ -26,7 +26,7 @@ export const TableContent = () => {
       },
     },
     {
-      Header: "Rarest attributes",
+      Header: "Rarest attribute",
       accessor: "rarestAttribute",
       Cell: function MemberCell(data: any) {
         return <RarestAttribute data={data} />;

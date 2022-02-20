@@ -17,6 +17,7 @@ import { sortByRarity } from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
 import { Listing } from "../types/listing";
 import { Footer } from "../components/Footer";
+import { CollectionInfo } from "../types/collection";
 
 const Index = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const Index = () => {
   const [howrareCollection, setHowrareCollection] = useState<string>("");
   const [collectionName, setCollectionName] = useState<string>("");
   const [sortPreference, setSortPreference] = useState<string>("rarity");
+  const [collectionInfo, setCollectionInfo] = useState<CollectionInfo>();
 
   const searchCollection = (skip: number): void => {
     setPageNumber(skip);
@@ -49,6 +51,15 @@ const Index = () => {
         ).then((magiceden) => {
           setHowrareCollection(howrare?.collection);
           setHowrareListings(howrare?.items);
+          setCollectionInfo({
+            twitter: howrare.twitter,
+            website: howrare.website,
+            logo: howrare.logo,
+            howrare: howrare.ranking_url,
+            discord: howrare.discord,
+            description: howrare.description,
+          });
+          console.log(howrare);
           setListings(sortByRarity(howrare?.items, magiceden?.results));
           setLoading(false);
         });
@@ -69,6 +80,7 @@ const Index = () => {
   const listingsContextValue: AppContextInterface = {
     data: listings,
     collectionName: collectionName,
+    collectionInfo: collectionInfo,
     pageNumber: pageNumber,
     loading: loading,
     changePage: searchCollection,
@@ -108,6 +120,7 @@ const Index = () => {
 interface AppContextInterface {
   data: Array<Listing>;
   collectionName: string;
+  collectionInfo: CollectionInfo;
   pageNumber: number;
   loading: boolean;
   changePage: (skip: number) => void;
