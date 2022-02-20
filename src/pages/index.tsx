@@ -1,4 +1,11 @@
-import { Box, InputGroup, Input, Button, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  InputGroup,
+  Input,
+  Button,
+  Heading,
+} from "@chakra-ui/react";
 
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { createContext, useState } from "react";
