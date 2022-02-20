@@ -9,12 +9,12 @@ import * as React from "react";
 import { ListingsContext } from "../../pages";
 
 export const TablePagination = () => {
-  const { data, pageNumber, changePage } = React.useContext(ListingsContext);
+  const { pageNumber, changePage } = React.useContext(ListingsContext);
 
   return (
     <Flex align="center" justify="space-between">
       <Text color={mode("gray.600", "gray.400")} fontSize="sm">
-        {data.length} listings
+        Shows 20 listings per page
       </Text>
       <ButtonGroup variant="outline" size="sm">
         {pageNumber !== 0 && (

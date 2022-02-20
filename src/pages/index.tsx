@@ -53,6 +53,7 @@ const Index = () => {
 
   const listingsContextValue: AppContextInterface = {
     data: listings,
+    collectionName: collectionName,
     pageNumber: pageNumber,
     loading: loading,
     changePage: searchCollection,
@@ -87,6 +88,7 @@ const Index = () => {
 
 interface AppContextInterface {
   data: Array<Listing>;
+  collectionName: string;
   pageNumber: number;
   loading: boolean;
   changePage: (skip: number) => void;

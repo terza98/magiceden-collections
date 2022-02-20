@@ -1,6 +1,5 @@
 import {
   Button,
-  ButtonGroup,
   Flex,
   FormControl,
   FormLabel,
@@ -8,15 +7,20 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
   Select,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import * as React from "react";
+import { useContext, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { RiAddFill, RiArrowRightUpLine } from "react-icons/ri";
+import { ListingsContext } from "../../pages";
 
 export const TableActions = () => {
+  const { collectionName } = useContext(ListingsContext);
+
+  const [query, setQuery] = useState<string>("");
+
   return (
     <Stack
       spacing="4"
@@ -27,19 +31,27 @@ export const TableActions = () => {
       <HStack>
         <FormControl minW={{ md: "320px" }} id="search">
           <InputGroup size="sm">
-            <FormLabel srOnly>Filter by ID or RANK</FormLabel>
+            <FormLabel srOnly>Search by ID</FormLabel>
             <InputLeftElement pointerEvents="none" color="gray.400">
               <BsSearch />
             </InputLeftElement>
             <Input
               rounded="base"
               type="search"
-              placeholder="Filter by ID or RANK..."
+              placeholder="Search by ID"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </InputGroup>
         </FormControl>
 
-        <Button> Filter</Button>
+        <Button
+          as={Link}
+          target="_blank"
+          href={`https://howrare.is/${collectionName}/${query}`}
+        >
+          Search
+        </Button>
       </HStack>
 
       <Flex alignItems="center">
