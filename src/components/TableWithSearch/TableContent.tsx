@@ -51,7 +51,7 @@ export const TableContent = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {listingsContext.loading && (
+        {listingsContext.loading ? (
           <Tr>
             <Td></Td>
             <Td></Td>
@@ -59,42 +59,43 @@ export const TableContent = () => {
               <Loading loading={listingsContext.loading} />
             </Td>
           </Tr>
+        ) : (
+          listingsContext.data.map((row, index) => (
+            <Tr key={row.id}>
+              {columns.map((column, index) => {
+                const cell = row[column.accessor as keyof typeof row];
+                const element = column.Cell?.(cell) ?? cell;
+                return (
+                  <Td whiteSpace="nowrap" key={index}>
+                    {element}
+                  </Td>
+                );
+              })}
+              <Td textAlign="right">
+                <Button
+                  as={Link}
+                  variant="link"
+                  colorScheme="blue"
+                  href={row.meUrl}
+                  target="_blank"
+                >
+                  Magic Eden
+                </Button>
+                <br />
+                <Button
+                  as={Link}
+                  variant="link"
+                  colorScheme="blue"
+                  href={row.howrareUrl}
+                  target="_blank"
+                  mt={4}
+                >
+                  HowRare
+                </Button>
+              </Td>
+            </Tr>
+          ))
         )}
-        {listingsContext.data.map((row, index) => (
-          <Tr key={row.id}>
-            {columns.map((column, index) => {
-              const cell = row[column.accessor as keyof typeof row];
-              const element = column.Cell?.(cell) ?? cell;
-              return (
-                <Td whiteSpace="nowrap" key={index}>
-                  {element}
-                </Td>
-              );
-            })}
-            <Td textAlign="right">
-              <Button
-                as={Link}
-                variant="link"
-                colorScheme="blue"
-                href={row.meUrl}
-                target="_blank"
-              >
-                Magic Eden
-              </Button>
-              <br />
-              <Button
-                as={Link}
-                variant="link"
-                colorScheme="blue"
-                href={row.howrareUrl}
-                target="_blank"
-                mt={4}
-              >
-                HowRare
-              </Button>
-            </Td>
-          </Tr>
-        ))}
       </Tbody>
     </Table>
   );
