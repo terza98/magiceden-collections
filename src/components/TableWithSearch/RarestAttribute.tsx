@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 
 interface UserProps {
   data: {
-    rarity: string;
-    name: string;
+    rarity?: string;
+    value_perc?: number;
+    attribute?: string;
+    name?: string;
     value: string;
   };
 }
@@ -15,8 +17,8 @@ export const RarestAttribute = (props: UserProps) => {
   const [value, setValue] = useState<string>();
 
   useEffect(() => {
-    setRarity(props.data?.rarity);
-    setName(props.data?.name);
+    setRarity(props.data?.rarity ?? props.data?.value_perc.toString());
+    setName(props.data?.name ?? props.data?.attribute);
     setValue(props.data?.value);
   }, [props]);
 

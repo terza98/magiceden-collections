@@ -86,16 +86,30 @@ export const TableContent = () => {
                   Magic Eden
                 </Button>
                 <br />
-                <Button
-                  as={Link}
-                  variant="link"
-                  colorScheme="blue"
-                  href={row.howrareUrl}
-                  target="_blank"
-                  mt={4}
-                >
-                  HowRare
-                </Button>
+                {row.howrareUrl && (
+                  <Button
+                    as={Link}
+                    variant="link"
+                    colorScheme="blue"
+                    href={row.howrareUrl}
+                    target="_blank"
+                    mt={4}
+                  >
+                    HowRare
+                  </Button>
+                )}
+                {row.moonrankUrl && (
+                  <Button
+                    as={Link}
+                    variant="link"
+                    colorScheme="blue"
+                    href={row.moonrankUrl}
+                    target="_blank"
+                    mt={4}
+                  >
+                    Moonrank
+                  </Button>
+                )}
               </Td>
             </Tr>
           ))

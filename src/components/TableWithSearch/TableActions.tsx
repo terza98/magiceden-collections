@@ -17,7 +17,7 @@ import { BsSearch } from "react-icons/bs";
 import { ListingsContext } from "../../pages";
 
 export const TableActions = () => {
-  const { collectionName, sort } = useContext(ListingsContext);
+  const { collectionSymbol, sort } = useContext(ListingsContext);
 
   const [query, setQuery] = useState<string>("");
 
@@ -48,7 +48,7 @@ export const TableActions = () => {
         <Button
           as={Link}
           target="_blank"
-          href={`https://howrare.is/${collectionName}/${query}`}
+          href={`https://howrare.is/${collectionSymbol.toLowerCase()}/${query}`}
         >
           Search
         </Button>

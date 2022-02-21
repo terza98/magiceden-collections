@@ -6,8 +6,13 @@ import {
   allCollectionsFromMagiceden,
   getCollectionFromHowrare,
   getCollectionFromMagiceden,
+  getCollectionFromMoonrank,
 } from "../api/queries";
-import { filterCollections, sortByRarity } from "../utils/helpers";
+import {
+  filterCollections,
+  sortByRarity,
+  sortByRarityMoonrank,
+} from "../utils/helpers";
 import { TableWithSearch } from "../components/TableWithSearch/TableWithSearch";
 import { Listing } from "../types/listing";
 import { Footer } from "../components/Footer";
@@ -38,7 +43,7 @@ const Index = () => {
 
   const searchCollection = (skip: number, collectionSymbol: string): void => {
     const howrareHandle = collectionSymbol.replaceAll("_", "");
-
+    setCollectionSymbol(collectionSymbol);
     setPageNumber(skip);
     setLoading(true);
 
@@ -54,27 +59,51 @@ const Index = () => {
       });
     else
       getCollectionFromHowrare(howrareHandle).then((howrare) => {
-        getCollectionFromMagiceden(
-          collectionSymbol,
-          skip * 20,
-          sortPreference
-        ).then((magiceden) => {
-          setHowrareCollection(howrare?.collection);
-          setHowrareListings(howrare?.items);
-          if (howrare)
-            setCollectionInfo({
-              twitter: howrare.twitter ?? "",
-              website: howrare.website ?? "",
-              logo: howrare.logo ?? "",
-              howrare: howrare.ranking_url ?? "",
-              discord: howrare.discord ?? "",
-              description: howrare.description ?? "",
-              name: howrare.collection ?? "",
+        if (howrare)
+          getCollectionFromMagiceden(
+            collectionSymbol,
+            skip * 20,
+            sortPreference
+          ).then((magiceden) => {
+            setHowrareCollection(howrare?.collection);
+            setHowrareListings(howrare?.items);
+            if (howrare)
+              setCollectionInfo({
+                twitter: howrare.twitter ?? "",
+                website: howrare.website ?? "",
+                logo: howrare.logo ?? "",
+                howrare: howrare.ranking_url ?? "",
+                discord: howrare.discord ?? "",
+                description: howrare.description ?? "",
+                name: howrare.collection ?? "",
+              });
+            console.log(howrare);
+            setListings(sortByRarity(howrare?.items, magiceden?.results));
+            setLoading(false);
+          });
+        else {
+          //fix xin baby symbol
+          const collectionToSearch =
+            collectionSymbol === "xin_dragons_gen_2"
+              ? "xin_dragons_gen2"
+              : collectionSymbol;
+          getCollectionFromMoonrank(collectionToSearch).then((moonrank) => {
+            getCollectionFromMagiceden(
+              collectionSymbol,
+              skip * 20,
+              sortPreference
+            ).then((magiceden) => {
+              setListings(
+                sortByRarityMoonrank(
+                  collectionToSearch,
+                  moonrank.mints,
+                  magiceden?.results
+                )
+              );
+              setLoading(false);
             });
-          console.log(howrare);
-          setListings(sortByRarity(howrare?.items, magiceden?.results));
-          setLoading(false);
-        });
+          });
+        }
       });
   };
 

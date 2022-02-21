@@ -12,7 +12,8 @@ export interface Listing {
   };
   price: string;
   meUrl: string;
-  howrareUrl: string;
+  howrareUrl?: string;
+  moonrankUrl?: string;
   collection: string;
   id: string;
 }

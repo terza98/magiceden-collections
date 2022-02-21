@@ -49,7 +49,7 @@ export const allCollectionsFromMagiceden = async () => {
 export const getCollectionFromMoonrank = async (collection: string) => {
   try {
     const response = await axios.get(
-      `https://proxy-server-magiceden.herokuapp.com/https://moonrank.app/mints/xin_dragons_gen2`
+      `https://proxy-server-magiceden.herokuapp.com/https://moonrank.app/mints/${collection}`
     );
     console.log(response.data);
     if (response) return response.data;
