@@ -51,6 +51,19 @@ export const getCollectionFromMoonrank = async (collection: string) => {
     const response = await axios.get(
       `https://proxy-server-magiceden.herokuapp.com/https://moonrank.app/mints/${collection}`
     );
+    if (response) return response.data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+//tokens per wallet
+
+export const getTokensPerWallet = async (wallet: string) => {
+  try {
+    const response = await axios.get(
+      `https://api-mainnet.magiceden.dev/v2/wallets/${wallet}/tokens?offset=0&limit=100`
+    );
     console.log(response.data);
     if (response) return response.data;
   } catch (error) {

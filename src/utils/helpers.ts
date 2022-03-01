@@ -1,3 +1,8 @@
+import {
+  getCollectionFromHowrare,
+  getCollectionFromMoonrank,
+} from "../api/queries";
+
 function compare(a, b) {
   if (a.nft.rank < b.nft.rank) {
     return -1;
@@ -8,7 +13,8 @@ function compare(a, b) {
   return 0;
 }
 
-export const getId = (meItem) => meItem.title.split("#")[1].trim();
+export const getId = (meItem) =>
+  (meItem.title || meItem.name).split("#")[1]?.trim();
 
 export const sortByRarity = (collectionRanked, collectionMagiceden) => {
   const comparableListings = [];
@@ -86,4 +92,53 @@ export const filterCollections = (query, collections) => {
   return collections.filter(
     (collection) => collection.symbol.indexOf(query.toLowerCase()) > -1
   );
+};
+
+export const sortTokensByCollection = async (tokens) => {
+  // { collection: "blockstars", tokensArray: [{}] }
+  const list = new Map();
+
+  tokens.forEach((token) => {
+    const tmp = list.has(token.collection) ? list.get(token.collection) : [];
+    tmp.push(token);
+    list.set(token.collection, tmp);
+  });
+
+  const newList = await sortTokensByRarity(list);
+
+  return newList;
+};
+
+export const sortTokensByRarity = async (list) => {
+  const newList = list;
+
+  Array.from(newList?.entries()).forEach((collection) => {
+    const howrareHandle = collection[0]?.replaceAll("_", "");
+
+    getCollectionFromHowrare(howrareHandle).then((howrare) => {
+      if (howrare)
+        newList.set(collection[0], sortByRarity(howrare?.items, collection[1]));
+      else {
+        const collectionSymbol =
+          collection[0] === "xin_dragons_gen_2"
+            ? "xin_dragons_gen2"
+            : collection[0];
+
+        console.log(collectionSymbol);
+        collectionSymbol &&
+          getCollectionFromMoonrank(collectionSymbol).then((moonrank) => {
+            newList.set(
+              collection[0],
+              sortByRarityMoonrank(
+                collection[0],
+                moonrank?.mints,
+                collection[1]
+              )
+            );
+          });
+      }
+    });
+  });
+
+  return newList;
 };
