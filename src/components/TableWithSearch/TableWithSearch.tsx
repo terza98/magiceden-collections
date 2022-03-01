@@ -12,7 +12,7 @@ const iconButtonProps = {
   mr: 2,
 };
 export const TableWithSearch = () => {
-  const { collectionName, collectionInfo } = useContext(ListingsContext);
+  const { collectionSymbol, collectionInfo } = useContext(ListingsContext);
 
   return (
     <Box as="section" py="12">
@@ -23,7 +23,7 @@ export const TableWithSearch = () => {
       >
         <Box overflowX="auto">
           <Heading size="lg" mb="2">
-            <Link href={`https://magiceden.io/marketplace/${collectionName}`}>
+            <Link href={`https://magiceden.io/marketplace/${collectionSymbol}`}>
               {collectionInfo?.name}
             </Link>
           </Heading>
